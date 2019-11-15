@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-@Disabled
+//@Disabled
 public class LoginEndpointTest {
 
     private static final int SERVER_PORT = 7777;
@@ -100,7 +100,6 @@ public class LoginEndpointTest {
         securityToken = given()
                 .contentType("application/json")
                 .body(json)
-                //.when().post("/api/login")
                 .when().post("/login")
                 .then()
                 .extract().path("token");
@@ -164,17 +163,6 @@ public class LoginEndpointTest {
     }
 
     @Test
-    public void testAutorizedAdminCannotAccesUserPage() {
-        login("admin", "test");
-        given()
-                .contentType("application/json")
-                .header("x-access-token", securityToken)
-                .when()
-                .get("/info/user").then() //Call User endpoint as Admin
-                .statusCode(401);
-    }
-
-    @Test
     public void testRestForMultiRole1() {
         login("user_admin", "test");
         given()
@@ -222,5 +210,4 @@ public class LoginEndpointTest {
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
     }
-
 }
